@@ -1,44 +1,37 @@
 #!/bin/bash
 
-# Funkcja do sprawdzenia, czy narzędzie jest zainstalowane
-check_install() {
-  if ! command -v $1 &> /dev/null
-  then
-    echo "$1 nie jest zainstalowane. Instalowanie..."
-    sudo apt update && sudo apt install -y $1
-  else
-    echo "$1 jest już zainstalowane."
-  fi
-}
+set -e
 
-# Instalacja niezbędnych narzędzi
-check_install "zsh"
-check_install "kitty"
-
-# Instalacja paczek (możesz dodać własne paczki, np. z listy paczek manualnych)
-echo "Instalowanie paczek..."
-# Przykład instalacji paczek (zależy od dystrybucji)
+echo "===> [1/5] Installing packages..."
+sudo apt update
 sudo apt install -y \
-  zsh \
-  oh-my-zsh \
-  kitty \
-  plasma-desktop \
-  kde-config-gtk-style
+  zsh kitty git curl wget \
+  kde-plasma-desktop \
+  plasma-discover \
+  sddm \
+  fonts-firacode
 
-# Zmieniamy powłokę na ZSH
-echo "Zmiana powłoki na ZSH..."
+echo "===> [2/5] Copying KDE configuration files to ~/.config..."
+mkdir -p ~/.config
+cp -rv config/* ~/.config/
+
+echo "===> [3/5] Copying Plasma themes, look-and-feel and widgets to ~/.local/share/plasma..."
+mkdir -p ~/.local/share/plasma
+cp -rv local_share/plasma/* ~/.local/share/plasma/
+
+echo "===> [4/5] Installing ZSH configuration and oh-my-zsh..."
+cp -v zshrc ~/.zshrc
+cp -rv oh-my-zsh ~/.oh-my-zsh
+
+echo "===> [5/5] Copying Kitty terminal config..."
+mkdir -p ~/.config/kitty
+cp -rv kitty/* ~/.config/kitty/
+
+echo "===> Setting ZSH as the default shell..."
 chsh -s $(which zsh)
 
-# Tworzymy symlinki z dotfiles
-echo "Tworzenie symlinków z dotfiles..."
-ln -sf $PWD/zsh/.zshrc ~/
-ln -sf $PWD/config/kitty ~/ .config/
-ln -sf $PWD/config/kdeglobals ~/.config/
-ln -sf $PWD/config/kwinrc ~/.config/
-ln -sf $PWD/config/plasmarc ~/.config/
+echo "===> Restarting KDE Plasma shell..."
+kquitapp5 plasmashell || true
+kstart5 plasmashell &
 
-# Dodatkowe komendy, np. do uruchomienia plasmy
-echo "Ustawienie domyślnej aplikacji na KDE..."
-kwriteconfig5 --file kwinrc SwitchToNextTabOnCtrlTab true
-
-echo "Instalacja zakończona! Uruchom ponownie komputer."
+echo "✅ Dotfiles installation complete!"
