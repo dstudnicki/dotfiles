@@ -24,7 +24,7 @@ cp -v zshrc/.zshrc ~/.zshrc
 
 echo "===> [5/5] Copying Kitty terminal config..."
 mkdir -p ~/.config/kitty
-cp -rv kitty/* ~/.config/kitty/
+cp -rv config/kitty/* ~/.config/kitty/
 
 echo "===> Setting ZSH as the default shell..."
 chsh -s $(which zsh)
