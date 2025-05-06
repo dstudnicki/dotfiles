@@ -20,8 +20,7 @@ mkdir -p ~/.local/share/plasma
 cp -rv local/share/plasma/* ~/.local/share/plasma/
 
 echo "===> [4/5] Installing ZSH configuration and oh-my-zsh..."
-cp -v zshrc ~/.zshrc
-cp -rv oh-my-zsh ~/.oh-my-zsh
+cp -v zshrc/.zshrc ~/.zshrc
 
 echo "===> [5/5] Copying Kitty terminal config..."
 mkdir -p ~/.config/kitty
