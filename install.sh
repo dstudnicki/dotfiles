@@ -17,7 +17,7 @@ cp -rv config/* ~/.config/
 
 echo "===> [3/5] Copying Plasma themes, look-and-feel and widgets to ~/.local/share/plasma..."
 mkdir -p ~/.local/share/plasma
-cp -rv local_share/plasma/* ~/.local/share/plasma/
+cp -rv local/share/plasma/* ~/.local/share/plasma/
 
 echo "===> [4/5] Installing ZSH configuration and oh-my-zsh..."
 cp -v zshrc ~/.zshrc
